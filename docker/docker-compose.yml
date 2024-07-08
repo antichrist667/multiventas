@@ -1,32 +1,24 @@
-version: '3.8'
-
+version: "3.8"
 services:
   productos:
-    build: ./productos
+    build: ../productos
     ports:
       - "2001:2001"
     networks:
-      - my-network
-
+      - microservices-network
   clientes:
-    build: ./clientes
+    build: ../clientes
     ports:
       - "2000:2000"
     networks:
-      - my-network
-    depends_on:
-      - productos
-
+      - microservices-network
   ventas:
-    build: ./ventas
+    build: ../ventas
     ports:
       - "2002:2002"
     networks:
-      - my-network
-    depends_on:
-      - productos
-      - clientes
+      - microservices-network
 
 networks:
-  my-network:
+  microservices-network:
     driver: bridge
