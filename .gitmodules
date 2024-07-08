@@ -1,0 +1,9 @@
+[submodule "ventas"]
+	path = ventas
+	url = https://github.com/antichrist667/ventas.git
+[submodule "productos"]
+	path = productos
+	url = https://github.com/antichrist667/productos.git
+[submodule "clientes"]
+	path = clientes
+	url = https://github.com/antichrist667/clientes.git
