@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout código
+    - name: Checkout code
       uses: actions/checkout@v3
       
     - name: Log in to Docker Hub
@@ -20,12 +20,12 @@ jobs:
         
     - name: Build and Push Docker Images
       run: |
-        services=("productos" "clientes" "ventas")
+        services=("clientes" "productos" "ventas")
         
         for service in "${services[@]}"
         do
           if [ -d "$service" ]; then
-            docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/$service:latest ./$service
+            docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/$service:latest -f $service/Dockerfile $service
             docker push ${{ secrets.DOCKERHUB_USERNAME }}/$service:latest
           else
             echo "Failed to find the path of directory of service $service"
@@ -35,14 +35,14 @@ jobs:
 
     - name: Update docker-compose Paths
       run: |
-        sed -i 's|build: \./|build: ../|g' ./docker-compose.yml
+        sed -i 's|build: \./|build: ../|g' ./docker/docker-compose.yml
         echo "Updated docker-compose.yml content:"
-        cat ./docker-compose.yml
+        cat ./docker/docker-compose.yml
 
     - name: Clean up previous containers
       run: |
-        docker-compose -f ./docker-compose.yml down
+        docker-compose -f ./docker/docker-compose.yml down
 
     - name: Execute Docker Compose
       run: |
-        docker-compose -f ./docker-compose.yml up -d
+        docker-compose -f ./docker/docker-compose.yml up -d
