@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  productos:
+    build: ./productos
+    ports:
+      - "2001:2001"
+    networks:
+      - my-network
+
+  clientes:
+    build: ./clientes
+    ports:
+      - "2000:2000"
+    networks:
+      - my-network
+    depends_on:
+      - productos
+
+  ventas:
+    build: ./ventas
+    ports:
+      - "2002:2002"
+    networks:
+      - my-network
+    depends_on:
+      - productos
+      - clientes
+
+networks:
+  my-network:
+    driver: bridge
