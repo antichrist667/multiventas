@@ -24,14 +24,9 @@ jobs:
         
         for service in "${services[@]}"
         do
-          if [ -d "$service" ]; then
-            echo "Building $service"
-            docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/$service:latest -f $service/Dockerfile $service
-            docker push ${{ secrets.DOCKERHUB_USERNAME }}/$service:latest
-          else
-            echo "Failed to find the path of directory of service $service"
-            exit 1
-          fi
+          echo "Building $service"
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/$service:latest -f ./$service/Dockerfile ./$service
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/$service:latest
         done
 
     - name: Update docker-compose Paths
